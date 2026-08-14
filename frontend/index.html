@@ -1078,6 +1078,18 @@
         @media (hover: hover) and (pointer: fine) {
             .premium-market-viewport:hover .premium-market-track { animation-play-state: paused; }
         }
+        /* Keep the market cards moving on touch/mobile screens */
+@media (hover: none), (pointer: coarse) {
+    .premium-market-track {
+        animation: marketFlowRight 42s linear infinite !important;
+        animation-play-state: running !important;
+    }
+
+    .premium-market-viewport:hover .premium-market-track,
+    .premium-market-viewport:active .premium-market-track {
+        animation-play-state: running !important;
+    }
+}
 
         @keyframes marketFlowRight {
             from { transform: translateX(calc(-50% - 6px)); }
@@ -1360,6 +1372,15 @@
                 animation: marketFlowRight 42s linear infinite;
                 animation-play-state: running;
             }
+            @keyframes marketFlowRight {
+    from {
+        transform: translateX(calc(-50% - 6px));
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
             .chart-controls { min-width: 100%; grid-template-columns: minmax(0, 1fr) 96px; }
             .panel-header { width: 100%; }
             .panel-header > div:first-child { width: 100%; }
@@ -1478,6 +1499,19 @@
             }
             * { scroll-behavior: auto !important; }
         }
+        /* Force highest-price cards to move on mobile */
+@media (max-width: 820px) {
+    .premium-market-track {
+        animation: marketFlowRight 42s linear infinite !important;
+        animation-play-state: running !important;
+        will-change: transform;
+    }
+
+    .premium-market-viewport:hover .premium-market-track,
+    .premium-market-viewport:active .premium-market-track {
+        animation-play-state: running !important;
+    }
+}
     </style>
 </head>
 
