@@ -37,6 +37,11 @@
             font-family: "Manrope", sans-serif;
         }
 
+        body.assistant-open {
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
         button, input, select { font: inherit; }
 
         button { cursor: pointer; }
@@ -1067,6 +1072,7 @@
             padding: 2px 0 4px;
             animation: marketFlowRight 62s linear infinite;
             will-change: transform;
+            backface-visibility: hidden;
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -1117,105 +1123,31 @@
 
         .panel-header { gap: 18px; }
 
-        .section-heading {
-            min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 11px;
+        .interactive-header {
+            background: #141310;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+            transform-origin: center;
+        }
+        .interactive-header:hover {
+            background: #191714;
+            transform: translateY(-1px) scale(.992);
         }
 
-        .section-heading-icon {
-            width: 34px;
-            height: 34px;
-            flex: 0 0 34px;
-            border: 1px solid rgba(255, 124, 37, .45);
-            border-radius: 10px;
-            display: grid;
-            place-items: center;
-            color: #fff;
-            background:
-                radial-gradient(circle at 28% 18%, rgba(255, 255, 255, .22), transparent 35%),
-                linear-gradient(145deg, #ff7d24, #c94700);
-            box-shadow: 0 7px 20px rgba(255, 103, 12, .2);
-            font-size: 15px;
-            font-weight: 900;
+        .select-market,
+        .market-table-arrow,
+        .orange-button,
+        #send-button,
+        .assistant-toggle {
+            transition: transform .18s ease, box-shadow .18s ease,
+                        background .18s ease, border-color .18s ease;
         }
-
-        .section-heading-copy { min-width: 0; }
-        .section-kicker {
-            display: block;
-            margin-bottom: 3px;
-            color: var(--orange-soft);
-            font-size: 7px;
-            font-weight: 850;
-            letter-spacing: .13em;
-            text-transform: uppercase;
-        }
-
-        .section-heading h2 {
-            position: relative;
-            width: max-content;
-            max-width: 100%;
-            font-size: 14px;
-            letter-spacing: -.01em;
-        }
-
-        .section-heading h2::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 24px;
-            height: 2px;
-            border-radius: 2px;
-            background: linear-gradient(90deg, var(--orange), transparent);
-        }
-
-        .selected-coin-title {
-            min-height: 49px;
-            display: grid;
-            grid-template-columns: 30px minmax(0, 1fr) auto;
-            align-items: center;
-            gap: 9px;
-            background:
-                radial-gradient(circle at 95% 10%, rgba(255, 117, 24, .13), transparent 42%),
-                linear-gradient(135deg, #1b1714, #12110f);
-        }
-
-        .selected-title-icon {
-            width: 30px;
-            height: 30px;
-            border: 1px solid #5c3822;
-            border-radius: 9px;
-            display: grid;
-            place-items: center;
-            color: var(--orange-soft);
-            background: #291a12;
-            box-shadow: inset 0 1px rgba(255, 255, 255, .04);
-        }
-
-        .selected-title-copy { display: grid; gap: 2px; }
-        .selected-title-copy small {
-            color: var(--muted);
-            font-size: 7px;
-            font-weight: 700;
-            letter-spacing: .09em;
-            text-transform: uppercase;
-        }
-        .selected-live-badge {
-            padding: 4px 6px;
-            border: 1px solid rgba(46, 204, 113, .28);
-            border-radius: 999px;
-            color: var(--green);
-            background: rgba(46, 204, 113, .07);
-            font-size: 7px;
-            white-space: nowrap;
-        }
-
-        .selected-symbol h3 {
-            padding-left: 10px;
-            border-left: 3px solid var(--orange);
-            text-shadow: 0 0 18px rgba(255, 117, 24, .12);
+        .select-market:hover,
+        .market-table-arrow:not(:disabled):hover,
+        .orange-button:hover,
+        #send-button:hover,
+        .assistant-toggle:hover {
+            transform: translateY(-2px) scale(1.035);
+            box-shadow: 0 8px 20px rgba(255, 106, 16, .2);
         }
 
         .chart-controls {
@@ -1431,45 +1363,49 @@
             .chart-controls { min-width: 100%; grid-template-columns: minmax(0, 1fr) 96px; }
             .panel-header { width: 100%; }
             .panel-header > div:first-child { width: 100%; }
-            .section-heading-icon { width: 32px; height: 32px; flex-basis: 32px; }
-            .section-heading h2 { font-size: 13px; }
-
             .market-table-wrap {
                 scrollbar-width: none;
                 touch-action: pan-y;
             }
             .market-table-wrap::-webkit-scrollbar { display: none; }
             .market-table-navigation {
-                padding: 9px 12px;
+                position: relative;
+                z-index: 4;
+                padding: 10px 12px;
                 border-top: 1px solid rgba(255, 255, 255, .035);
                 border-bottom: 1px solid var(--border);
-                background: linear-gradient(90deg, #161310, #201811, #161310);
+                background: #171512;
                 display: grid;
-                grid-template-columns: 38px minmax(0, 1fr) 38px;
+                grid-template-columns: 42px minmax(0, 1fr) 42px;
                 align-items: center;
                 gap: 9px;
             }
             .market-table-navigation span {
-                color: var(--muted);
-                font-size: 9px;
-                font-weight: 750;
+                color: #d8d0c8;
+                font-size: 10px;
+                font-weight: 800;
                 text-align: center;
             }
             .market-table-arrow {
-                width: 38px;
-                height: 34px;
+                width: 42px;
+                height: 38px;
                 padding: 0;
-                border: 1px solid #6d3b20;
-                border-radius: 9px;
+                border: 1px solid #ff8b3d;
+                border-radius: 12px;
                 color: #fff;
-                background: linear-gradient(145deg, #392114, #21160f);
+                background: linear-gradient(145deg, #ff7d24, #d94d00);
                 display: grid;
                 place-items: center;
-                font-size: 18px;
-                box-shadow: inset 0 1px rgba(255, 255, 255, .04);
+                font-size: 21px;
+                font-weight: 900;
+                box-shadow: 0 7px 18px rgba(255, 105, 15, .22), inset 0 1px rgba(255, 255, 255, .16);
             }
             .market-table-arrow:not(:disabled):active { background: var(--orange); }
-            .market-table-arrow:disabled { opacity: .28; }
+            .market-table-arrow:disabled {
+                opacity: .24;
+                box-shadow: none;
+                filter: grayscale(.6);
+            }
             .chat-launcher {
                 right: max(12px, env(safe-area-inset-right));
                 top: auto;
@@ -1491,6 +1427,14 @@
                 height: calc(var(--mobile-viewport-height, 100dvh) - 16px);
                 max-height: calc(var(--mobile-viewport-height, 100dvh) - 16px);
                 border-radius: 16px;
+                overflow: hidden;
+            }
+            .assistant-card.expanded .rail-title {
+                position: relative;
+                z-index: 5;
+                flex: 0 0 auto;
+                padding: 13px 14px;
+                background: #141310;
             }
             .assistant-card.expanded #messages {
                 min-height: 0;
@@ -1506,7 +1450,15 @@
                 box-shadow: 0 -10px 24px rgba(0, 0, 0, .28);
             }
             .assistant-card.expanded #message-input,
-            .assistant-card.expanded #send-button { min-height: 44px; }
+            .assistant-card.expanded #send-button {
+                min-height: 44px;
+                font-size: 16px;
+            }
+            .assistant-card.expanded #send-button {
+                min-width: 68px;
+                padding-inline: 14px;
+                font-size: 13px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1520,7 +1472,10 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .premium-market-track { animation-play-state: paused; }
+            .premium-market-track {
+                animation-duration: 90s;
+                animation-play-state: running;
+            }
             * { scroll-behavior: auto !important; }
         }
     </style>
@@ -1596,15 +1551,8 @@
         </section>
 
         <section class="chart-panel" id="chart-section">
-            <div class="panel-header">
-                <div class="section-heading">
-                    <span class="section-heading-icon" aria-hidden="true">⌁</span>
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Live price action</span>
-                        <h2 id="chart-title">BTC/USDT · 5m</h2>
-                        <p>Live Binance candlestick market</p>
-                    </div>
-                </div>
+            <div class="panel-header interactive-header">
+                <div><h2 id="chart-title">BTC/USDT · 5m</h2><p>Live Binance candlestick market</p></div>
                 <div class="chart-controls" aria-label="Chart controls">
                     <label class="chart-control">
                         <span class="chart-control-label">Search market</span>
@@ -1640,20 +1588,13 @@
         </section>
 
         <section class="markets-panel" id="markets">
-            <div class="panel-header">
-                <div class="section-heading">
-                    <span class="section-heading-icon" aria-hidden="true">≋</span>
-                    <div class="section-heading-copy">
-                        <span class="section-kicker">Asset directory</span>
-                        <h2>Markets</h2>
-                        <p>Select a coin to update the chart and value panel</p>
-                    </div>
-                </div>
+            <div class="panel-header interactive-header">
+                <div><h2>Markets</h2><p>Select a coin to update the chart and value panel</p></div>
             </div>
             <div class="market-table-navigation" aria-label="Market table navigation">
-                <button class="market-table-arrow" id="market-table-back" type="button" aria-label="Show asset columns" title="Show assets">‹</button>
-                <span id="market-table-navigation-label">Assets and prices</span>
-                <button class="market-table-arrow" id="market-table-next" type="button" aria-label="Show View buttons" title="Show View buttons">›</button>
+                <button class="market-table-arrow" id="market-table-back" type="button" aria-label="Scroll back to asset columns" title="Back to assets">←</button>
+                <span id="market-table-navigation-label" aria-live="polite">Assets and prices · use arrow</span>
+                <button class="market-table-arrow" id="market-table-next" type="button" aria-label="Go right to View buttons" title="Go to View buttons">→</button>
             </div>
             <div class="market-table-wrap">
                 <table class="market-table">
@@ -1666,11 +1607,7 @@
 
     <aside class="right-rail">
         <section class="rail-card">
-            <div class="rail-title selected-coin-title">
-                <span class="selected-title-icon" aria-hidden="true">◈</span>
-                <span class="selected-title-copy"><small>Market focus</small><span>Selected coin</span></span>
-                <span class="selected-live-badge">● Live</span>
-            </div>
+            <div class="rail-title interactive-header">Selected coin</div>
             <div class="selected-summary">
                 <div class="selected-symbol"><h3 id="selected-symbol">BTC/USDT</h3><span id="selected-change">--</span></div>
                 <div id="selected-value">--</div>
@@ -1774,8 +1711,8 @@
         marketTableBack.disabled = marketTableWrap.scrollLeft <= 4;
         marketTableNext.disabled = showingActions || maximumScroll === 0;
         marketTableNavigationLabel.textContent = showingActions
-            ? "View coin actions"
-            : "Assets and prices";
+            ? "View buttons · tap ← to return"
+            : "Assets and prices · tap → for View";
     }
 
     function moveMarketTable(showActions) {
@@ -1865,7 +1802,21 @@
         premiumMarketTrack.querySelectorAll(".market-tape-card").forEach(card => {
             card.addEventListener("click", () => selectCoin(card.dataset.symbol, true));
         });
+        syncPremiumMarketMotion();
     }
+
+    function syncPremiumMarketMotion() {
+        if (window.matchMedia("(max-width: 820px)").matches) {
+            premiumMarketTrack.style.animationPlayState = "running";
+        } else {
+            premiumMarketTrack.style.removeProperty("animation-play-state");
+        }
+    }
+
+    window.addEventListener("resize", syncPremiumMarketMotion);
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) syncPremiumMarketMotion();
+    });
 
     function hidePairSuggestions() {
         pairSuggestions.hidden = true;
@@ -2292,7 +2243,7 @@
     function syncMobileAssistantViewport() {
         const viewport = window.visualViewport;
         const viewportHeight = viewport ? viewport.height : window.innerHeight;
-        const viewportTop = viewport ? viewport.offsetTop : 0;
+        const viewportTop = viewport ? Math.max(0, viewport.offsetTop) : 0;
         document.documentElement.style.setProperty("--mobile-viewport-height", `${viewportHeight}px`);
         document.documentElement.style.setProperty("--mobile-viewport-top", `${viewportTop}px`);
 
@@ -2312,6 +2263,7 @@
 
     function setAssistantExpanded(expanded) {
         assistantCard.classList.toggle("expanded", expanded);
+        document.body.classList.toggle("assistant-open", expanded);
         assistantBackdrop.hidden = !expanded;
         chatLauncher.classList.toggle("hidden", expanded);
         assistantToggle.textContent = expanded ? "↘" : "↗";
@@ -2326,7 +2278,11 @@
             syncMobileAssistantViewport();
             requestAnimationFrame(() => {
                 messages.scrollTop = messages.scrollHeight;
-                messageInput.focus();
+                try {
+                    messageInput.focus({preventScroll: true});
+                } catch {
+                    messageInput.focus();
+                }
             });
         }
     }
