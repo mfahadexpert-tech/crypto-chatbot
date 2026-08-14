@@ -428,7 +428,13 @@
 
         .chart-attribution a { color: #9c704f; }
 
-        .market-table-wrap { overflow-x: auto; }
+        .market-table-wrap {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            overscroll-behavior-inline: contain;
+        }
+
+        .market-table-navigation { display: none; }
 
         .market-table {
             width: 100%;
@@ -1063,7 +1069,9 @@
             will-change: transform;
         }
 
-        .premium-market-viewport:hover .premium-market-track { animation-play-state: paused; }
+        @media (hover: hover) and (pointer: fine) {
+            .premium-market-viewport:hover .premium-market-track { animation-play-state: paused; }
+        }
 
         @keyframes marketFlowRight {
             from { transform: translateX(calc(-50% - 6px)); }
@@ -1108,6 +1116,107 @@
         .market-tape-change { align-self: end; justify-self: end; font-size: 10px; font-weight: 800; }
 
         .panel-header { gap: 18px; }
+
+        .section-heading {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .section-heading-icon {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            border: 1px solid rgba(255, 124, 37, .45);
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background:
+                radial-gradient(circle at 28% 18%, rgba(255, 255, 255, .22), transparent 35%),
+                linear-gradient(145deg, #ff7d24, #c94700);
+            box-shadow: 0 7px 20px rgba(255, 103, 12, .2);
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        .section-heading-copy { min-width: 0; }
+        .section-kicker {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--orange-soft);
+            font-size: 7px;
+            font-weight: 850;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            position: relative;
+            width: max-content;
+            max-width: 100%;
+            font-size: 14px;
+            letter-spacing: -.01em;
+        }
+
+        .section-heading h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 24px;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--orange), transparent);
+        }
+
+        .selected-coin-title {
+            min-height: 49px;
+            display: grid;
+            grid-template-columns: 30px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 9px;
+            background:
+                radial-gradient(circle at 95% 10%, rgba(255, 117, 24, .13), transparent 42%),
+                linear-gradient(135deg, #1b1714, #12110f);
+        }
+
+        .selected-title-icon {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #5c3822;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            color: var(--orange-soft);
+            background: #291a12;
+            box-shadow: inset 0 1px rgba(255, 255, 255, .04);
+        }
+
+        .selected-title-copy { display: grid; gap: 2px; }
+        .selected-title-copy small {
+            color: var(--muted);
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+        }
+        .selected-live-badge {
+            padding: 4px 6px;
+            border: 1px solid rgba(46, 204, 113, .28);
+            border-radius: 999px;
+            color: var(--green);
+            background: rgba(46, 204, 113, .07);
+            font-size: 7px;
+            white-space: nowrap;
+        }
+
+        .selected-symbol h3 {
+            padding-left: 10px;
+            border-left: 3px solid var(--orange);
+            text-shadow: 0 0 18px rgba(255, 117, 24, .12);
+        }
 
         .chart-controls {
             min-width: min(100%, 500px);
@@ -1309,14 +1418,62 @@
             .nav-button { justify-content: center; padding: 9px 8px; font-size: 9px; }
             .premium-market-heading span { display: none; }
             .market-tape-card { width: 175px; min-height: 98px; padding: 11px; }
-            .premium-market-track { gap: 9px; animation-duration: 50s; }
+            .premium-market-viewport {
+                overflow: hidden;
+                touch-action: pan-y;
+                mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+            }
+            .premium-market-track {
+                gap: 9px;
+                animation: marketFlowRight 42s linear infinite;
+                animation-play-state: running;
+            }
             .chart-controls { min-width: 100%; grid-template-columns: minmax(0, 1fr) 96px; }
             .panel-header { width: 100%; }
             .panel-header > div:first-child { width: 100%; }
+            .section-heading-icon { width: 32px; height: 32px; flex-basis: 32px; }
+            .section-heading h2 { font-size: 13px; }
+
+            .market-table-wrap {
+                scrollbar-width: none;
+                touch-action: pan-y;
+            }
+            .market-table-wrap::-webkit-scrollbar { display: none; }
+            .market-table-navigation {
+                padding: 9px 12px;
+                border-top: 1px solid rgba(255, 255, 255, .035);
+                border-bottom: 1px solid var(--border);
+                background: linear-gradient(90deg, #161310, #201811, #161310);
+                display: grid;
+                grid-template-columns: 38px minmax(0, 1fr) 38px;
+                align-items: center;
+                gap: 9px;
+            }
+            .market-table-navigation span {
+                color: var(--muted);
+                font-size: 9px;
+                font-weight: 750;
+                text-align: center;
+            }
+            .market-table-arrow {
+                width: 38px;
+                height: 34px;
+                padding: 0;
+                border: 1px solid #6d3b20;
+                border-radius: 9px;
+                color: #fff;
+                background: linear-gradient(145deg, #392114, #21160f);
+                display: grid;
+                place-items: center;
+                font-size: 18px;
+                box-shadow: inset 0 1px rgba(255, 255, 255, .04);
+            }
+            .market-table-arrow:not(:disabled):active { background: var(--orange); }
+            .market-table-arrow:disabled { opacity: .28; }
             .chat-launcher {
                 right: max(12px, env(safe-area-inset-right));
                 top: auto;
-                bottom: max(12px, env(safe-area-inset-bottom));
+                bottom: max(64px, calc(env(safe-area-inset-bottom) + 56px));
                 transform: none;
                 min-width: 44px;
                 min-height: 44px;
@@ -1327,12 +1484,29 @@
             .chat-launcher:hover { transform: translateY(-3px); }
             .chat-launcher.hidden { transform: translateY(12px); }
             .assistant-card.expanded {
-                top: 10px;
+                top: calc(var(--mobile-viewport-top, 0px) + 8px);
                 right: 10px;
-                bottom: 10px;
+                bottom: auto;
                 width: calc(100vw - 20px);
+                height: calc(var(--mobile-viewport-height, 100dvh) - 16px);
+                max-height: calc(var(--mobile-viewport-height, 100dvh) - 16px);
                 border-radius: 16px;
             }
+            .assistant-card.expanded #messages {
+                min-height: 0;
+                padding-bottom: 12px;
+            }
+            .assistant-card.expanded #chat-form {
+                position: sticky;
+                z-index: 4;
+                bottom: 0;
+                flex: 0 0 auto;
+                padding: 11px 12px max(11px, env(safe-area-inset-bottom));
+                background: linear-gradient(180deg, #171411, #100f0d);
+                box-shadow: 0 -10px 24px rgba(0, 0, 0, .28);
+            }
+            .assistant-card.expanded #message-input,
+            .assistant-card.expanded #send-button { min-height: 44px; }
         }
 
         @media (max-width: 480px) {
@@ -1423,7 +1597,14 @@
 
         <section class="chart-panel" id="chart-section">
             <div class="panel-header">
-                <div><h2 id="chart-title">BTC/USDT · 5m</h2><p>Live Binance candlestick market</p></div>
+                <div class="section-heading">
+                    <span class="section-heading-icon" aria-hidden="true">⌁</span>
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Live price action</span>
+                        <h2 id="chart-title">BTC/USDT · 5m</h2>
+                        <p>Live Binance candlestick market</p>
+                    </div>
+                </div>
                 <div class="chart-controls" aria-label="Chart controls">
                     <label class="chart-control">
                         <span class="chart-control-label">Search market</span>
@@ -1460,7 +1641,19 @@
 
         <section class="markets-panel" id="markets">
             <div class="panel-header">
-                <div><h2>Markets</h2><p>Select a coin to update the chart and value panel</p></div>
+                <div class="section-heading">
+                    <span class="section-heading-icon" aria-hidden="true">≋</span>
+                    <div class="section-heading-copy">
+                        <span class="section-kicker">Asset directory</span>
+                        <h2>Markets</h2>
+                        <p>Select a coin to update the chart and value panel</p>
+                    </div>
+                </div>
+            </div>
+            <div class="market-table-navigation" aria-label="Market table navigation">
+                <button class="market-table-arrow" id="market-table-back" type="button" aria-label="Show asset columns" title="Show assets">‹</button>
+                <span id="market-table-navigation-label">Assets and prices</span>
+                <button class="market-table-arrow" id="market-table-next" type="button" aria-label="Show View buttons" title="Show View buttons">›</button>
             </div>
             <div class="market-table-wrap">
                 <table class="market-table">
@@ -1473,7 +1666,11 @@
 
     <aside class="right-rail">
         <section class="rail-card">
-            <div class="rail-title">Selected coin</div>
+            <div class="rail-title selected-coin-title">
+                <span class="selected-title-icon" aria-hidden="true">◈</span>
+                <span class="selected-title-copy"><small>Market focus</small><span>Selected coin</span></span>
+                <span class="selected-live-badge">● Live</span>
+            </div>
             <div class="selected-summary">
                 <div class="selected-symbol"><h3 id="selected-symbol">BTC/USDT</h3><span id="selected-change">--</span></div>
                 <div id="selected-value">--</div>
@@ -1565,6 +1762,32 @@
     const recentTrades = document.getElementById("recent-trades");
     const recentTradesTitle = document.getElementById("recent-trades-title");
     const premiumMarketTrack = document.getElementById("premium-market-track");
+    const marketTableWrap = document.querySelector(".market-table-wrap");
+    const marketTableBack = document.getElementById("market-table-back");
+    const marketTableNext = document.getElementById("market-table-next");
+    const marketTableNavigationLabel = document.getElementById("market-table-navigation-label");
+
+    function updateMarketTableNavigation() {
+        if (!marketTableWrap) return;
+        const maximumScroll = Math.max(0, marketTableWrap.scrollWidth - marketTableWrap.clientWidth);
+        const showingActions = marketTableWrap.scrollLeft >= maximumScroll - 4;
+        marketTableBack.disabled = marketTableWrap.scrollLeft <= 4;
+        marketTableNext.disabled = showingActions || maximumScroll === 0;
+        marketTableNavigationLabel.textContent = showingActions
+            ? "View coin actions"
+            : "Assets and prices";
+    }
+
+    function moveMarketTable(showActions) {
+        const maximumScroll = Math.max(0, marketTableWrap.scrollWidth - marketTableWrap.clientWidth);
+        marketTableWrap.scrollTo({left: showActions ? maximumScroll : 0, behavior: "smooth"});
+        window.setTimeout(updateMarketTableNavigation, 350);
+    }
+
+    marketTableBack.addEventListener("click", () => moveMarketTable(false));
+    marketTableNext.addEventListener("click", () => moveMarketTable(true));
+    marketTableWrap.addEventListener("scroll", updateMarketTableNavigation, {passive: true});
+    window.addEventListener("resize", updateMarketTableNavigation);
 
     function formatPrice(value) {
         const number = Number(value);
@@ -2066,6 +2289,27 @@
     const assistantBackdrop = document.getElementById("assistant-backdrop");
     const chatLauncher = document.getElementById("chat-launcher");
 
+    function syncMobileAssistantViewport() {
+        const viewport = window.visualViewport;
+        const viewportHeight = viewport ? viewport.height : window.innerHeight;
+        const viewportTop = viewport ? viewport.offsetTop : 0;
+        document.documentElement.style.setProperty("--mobile-viewport-height", `${viewportHeight}px`);
+        document.documentElement.style.setProperty("--mobile-viewport-top", `${viewportTop}px`);
+
+        if (assistantCard.classList.contains("expanded")) {
+            requestAnimationFrame(() => {
+                messages.scrollTop = messages.scrollHeight;
+            });
+        }
+    }
+
+    syncMobileAssistantViewport();
+    window.addEventListener("resize", syncMobileAssistantViewport);
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", syncMobileAssistantViewport);
+        window.visualViewport.addEventListener("scroll", syncMobileAssistantViewport);
+    }
+
     function setAssistantExpanded(expanded) {
         assistantCard.classList.toggle("expanded", expanded);
         assistantBackdrop.hidden = !expanded;
@@ -2079,6 +2323,7 @@
         assistantToggle.title = expanded ? "Minimize assistant" : "Expand assistant";
 
         if (expanded) {
+            syncMobileAssistantViewport();
             requestAnimationFrame(() => {
                 messages.scrollTop = messages.scrollHeight;
                 messageInput.focus();
@@ -2119,6 +2364,7 @@
         if (!assistantCard.classList.contains("expanded")) {
             setAssistantExpanded(true);
         }
+        window.setTimeout(syncMobileAssistantViewport, 120);
     });
 
     function wait(milliseconds) {
@@ -2250,6 +2496,7 @@
     });
 
     renderMarketTable();
+    updateMarketTableNavigation();
     loadTradingPairs();
     loadSupplyData();
     setInterval(loadSupplyData, 300000);
